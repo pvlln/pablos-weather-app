@@ -6,7 +6,7 @@ $(function(){
         console.log("coordinates function called");
         var searchBar = $('.search-bar');
         var cityName = searchBar.val();
-        coordReqUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${apiKey}`;
+        coordReqUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${apiKey}`;
         // Fetch coordinates
         fetch(coordReqUrl).then(function(response){return response.json();}).then(function(data){
             var lat = data[0].lat;
@@ -49,27 +49,39 @@ $(function(){
             recentSearch.append(`<div class="row">
                                     <button class="btn btn-primary my-2 recent">${cityName}</button>
                                 </div>`);
+            var currentEl = $(`.day1`);
+            // Fill out first of 5 day forecast
+            currentEl.children('h4').text("Today");
+                // ADD EMOJI/ICON
+            currentEl.children('p').eq(1).text(`Temp: ${temp} °C`);
+            // FIX EMOJI FUNCTION
+            function emoji(){ 
+                return dayForecast.weather[0].main == 'Clear' ? currentEl.children('p').eq(1).attr('class', 'fas fa-sun')
+                : currentEl.children('p').eq(1).attr('class', 'fas fa-cloud-sun');
+            };
+            currentEl.children('p').eq(2).text(`Wind: ${wind} Km/h`);
+            currentEl.children('p').eq(3).text(`Humidity: ${hdity}%`);
             // Create function that makes api call from button
             $('.recent').on('click', function(event){
                 var searchbar = $('.search-bar');
                 searchbar = $(this).val();
-            })
+            });
         }).then(
         fetch(forecastReqUrl).then(function(response){return response.json();}).then(function(data){
-            for(let i=1; i<6; i++){
-                // console.log(data); let i=0; i<40; i+=8
-                var dayForecast = data.list[i];
+            for(let i=1; i<5; i++){
+                // console.log(data); let i=0; i<40; i+=8; i *8
+                var dayForecast = data.list[i*8];
                 var time = dayForecast.dt;
                 console.log(dayForecast, time);
                 var forecastTemp = dayForecast.main.temp;
                 var forecastWind = dayForecast.wind.speed;
                 var forecastHdity = dayForecast. main.humidity;
                 var forecastTime = dayjs.unix(time).format('MM/DD/YYYY');
-                var currentEl = $(`.day${i}`);
+                var currentEl = $(`.day${i+1}`);
                 console.log(currentEl.children('p').eq(1).text(`Temp: ${forecastTemp} °C`));
                 currentEl.children('h4').text(forecastTime);
-                // ADD EMOJI/ICON
                 currentEl.children('p').eq(1).text(`Temp: ${forecastTemp} °C`);
+                // FIX EMOJI/ICON FUNCTION
                 function emoji(){ 
                     return dayForecast.weather[0].main == 'Clear' ? currentEl.children('p').eq(1).attr('class', 'fas fa-sun')
                     : currentEl.children('p').eq(1).attr('class', 'fas fa-cloud-sun');
