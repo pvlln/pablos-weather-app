@@ -16,6 +16,7 @@ $(function(){
             getWeather(coordinates);
         })
     };
+    // Function to apply the emoji
     function setEmoji(weather, element) {
         if (weather == 'Clear') {
             return element.attr('class', 'emoji fas fa-sun');
