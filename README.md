@@ -9,7 +9,7 @@ My project was deployed to the following website: https://pvlln.github.io/pablos
 
 Here you will find my finished project. 
 
-![Screenshot of my Application](assets/Screen%20Shot%202023-03-15%20at%2011.18.59%20PM.png)
+![Screenshot of my Application](assets/Screenshot%202023-06-21%20at%204.25.25%20PM.png)
 
 ## Installation
 
